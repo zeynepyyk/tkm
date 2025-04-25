@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Taş Kağıt Makas Oyunu</title>
+  <style>
+    body {
+      background-color: #f8c8dc; /* pudra pembe */
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      margin-top: 50px;
+      font-size: 36px;
+    }
+
+    .form-container {
+      margin: 30px auto;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: red;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .score-table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 50%;
+      background-color: white;
+    }
+
+    .score-table th, .score-table td {
+      border: 2px solid black;
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    .choices {
+      margin-top: 20px;
+    }
+
+    .choice-image {
+      width: 100px;
+      height: auto;
+      margin: 10px;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Taş Kağıt Makas</h1>
+
+  <div class="form-container">
+    <input type="text" id="playerName" placeholder="Adınız">
+    <input type="number" id="rounds" placeholder="Tur Sayısı">
+    <button onclick="startGame()">Oyna</button>
+  </div>
+
+  <div id="gameArea" style="display: none;">
+    <div class="choices">
+      <button onclick="play('taş')">Taş</button>
+      <button onclick="play('kağıt')">Kağıt</button>
+      <button onclick="play('makas')">Makas</button>
+<img src="images/tas.png" width="400" height"300">
+<img src="images/kagit.png" width="400" height"300">
+<img src="images/makas.png" width="400" height"300">
+      <div>
+        <img src="/mnt/data/resimlertaş-karakter.png.png" alt="Taş" class="choice-image">
+        <img src="/mnt/data/resimlerkagıt-karakter.png.png" alt="Kağıt" class="choice-image">
+        <img src="/mnt/data/resimlermakas-karakter.png.png" alt="Makas" class="choice-image">
+      </div>
+    </div>
+
+    <div class="result">
+      <p><strong>Sen Seçtin:</strong> <span id="playerChoice">-</span></p>
+      <p><strong>Bilgisayar Seçti:</strong> <span id="computerChoice">-</span></p>
+    </div>
+
+    <table class="score-table">
+      <tr>
+        <th>Oyuncu</th>
+        <th>Bilgisayar</th>
+        <th>Kalan Tur</th>
+      </tr>
+      <tr>
+        <td id="playerScore">0</td>
+        <td id="computerScore">0</td>
+        <td id="remainingRounds">0</td>
+      </tr>
+    </table>
+  </div>
+
+  <script>
+    let playerScore = 0;
+    let computerScore = 0;
+    let remainingRounds = 0;
+
+    function startGame() {
+      const name = document.getElementById("playerName").value;
+      remainingRounds = parseInt(document.getElementById("rounds").value);
+      if (name && remainingRounds > 0) {
+        document.getElementById("gameArea").style.display = "block";
+        document.getElementById("remainingRounds").textContent = remainingRounds;
+        playerScore = 0;
+        computerScore = 0;
+        document.getElementById("playerScore").textContent = 0;
+        document.getElementById("computerScore").textContent = 0;
+      } else {
+        alert("Lütfen adınızı ve tur sayısını girin!");
+      }
+    }
+
+    function play(playerChoice) {
+      const choices = ['taş', 'kağıt', 'makas'];
+      const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+      document.getElementById("playerChoice").textContent = playerChoice;
+      document.getElementById("computerChoice").textContent = computerChoice;
+
+      if (playerChoice === computerChoice) {
+        // berabere
+      } else if (
+        (playerChoice === 'taş' && computerChoice === 'makas') ||
+        (playerChoice === 'kağıt' && computerChoice === 'taş') ||
+        (playerChoice === 'makas' && computerChoice === 'kağıt')
+      ) {
+        playerScore++;
+      } else {
+        computerScore++;
+      }
+
+      remainingRounds--;
+      document.getElementById("playerScore").textContent = playerScore;
+      document.getElementById("computerScore").textContent = computerScore;
+      document.getElementById("remainingRounds").textContent = remainingRounds;
+
+      if (remainingRounds === 0) {
+        setTimeout(() => {
+          alert("Oyun Bitti! Skor: " + playerScore + " - " + computerScore);
+        }, 500);
+      }
+    }
+  </script>
+</body>
+</html>
